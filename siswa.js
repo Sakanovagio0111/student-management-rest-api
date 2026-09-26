@@ -1,5 +1,14 @@
 const express = require('express');
 
+// ========================================
+// REST API SISWA
+// ========================================
+// GET    /api/siswa       -> Semua siswa
+// GET    /api/siswa/:id   -> Siswa berdasarkan ID
+// POST   /api/siswa       -> Tambah siswa
+// PUT    /api/siswa/:id   -> Edit siswa
+// DELETE /api/siswa/:id   -> Hapus siswa
+
 const router = express.Router();
 
 const siswaController = require('./siswaController');
