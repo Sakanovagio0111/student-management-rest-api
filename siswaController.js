@@ -1,5 +1,13 @@
 const db = require('./db');
 
+// ========================================
+// CRUD DATA SISWA
+// ========================================
+// CREATE -> Menambahkan data siswa
+// READ   -> Mengambil data siswa
+// UPDATE -> Mengubah data siswa
+// DELETE -> Menghapus data siswa
+
 
 // ========================================
 // GET SEMUA SISWA
