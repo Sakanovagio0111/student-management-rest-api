@@ -1,0 +1,1116 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System</title>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a2d;
+      --card-2: #0f172a;
+      --border: #26324d;
+      --text: #eef2ff;
+      --muted: #9ca8c4;
+      --primary: #7c5cff;
+      --primary-hover: #6847ee;
+      --danger: #ef5b6b;
+      --success: #2fc27e;
+      --warning: #f0b34b;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top right, #1c2142 0, var(--bg) 38%);
+      color: var(--text);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1450px, 94%);
+      margin: 0 auto;
+      padding: 34px 0 20px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: #9d8cff;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+    }
+
+    h1,
+    h2,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      letter-spacing: -.04em;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: 1.3rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: rgba(18, 26, 45, .88);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .form-card,
+    .table-card {
+      padding: 24px;
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .badge,
+    .count {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #252d48;
+      color: #c9d0e8;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      color: #cbd4e9;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card-2);
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, .15);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-weight: 800;
+      transition: transform .15s, background .15s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #242d46;
+      color: #e9edfb;
+    }
+
+    .btn-secondary:hover {
+      background: #303a58;
+    }
+
+    .btn-danger {
+      background: rgba(239, 91, 107, .13);
+      color: #ff8491;
+    }
+
+    .btn-edit {
+      background: rgba(240, 179, 75, .13);
+      color: #ffc96d;
+    }
+
+    .message {
+      margin-bottom: 20px;
+      padding: 13px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .message.success {
+      background: rgba(47, 194, 126, .1);
+      border-color: rgba(47, 194, 126, .35);
+      color: #6de1aa;
+    }
+
+    .message.error {
+      background: rgba(239, 91, 107, .1);
+      border-color: rgba(239, 91, 107, .35);
+      color: #ff8a96;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th,
+    td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #18213a;
+      color: #b9c5df;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    td {
+      color: #e1e6f5;
+      font-size: .88rem;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover td {
+      background: rgba(124, 92, 255, .045);
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .actions .btn {
+      padding: 8px 10px;
+      font-size: .78rem;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 120px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #303b59;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    .empty {
+      padding: 35px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 20px;
+      color: #74809d;
+      font-size: .78rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 950px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <header class="hero">
+      <div>
+        <p class="eyebrow">REST API PROJECT</p>
+
+        <h1>Student Management System</h1>
+
+        <p class="subtitle">
+          Kelola data siswa melalui Express.js, MySQL, dan JavaScript Fetch API.
+        </p>
+      </div>
+
+      <button id="refreshBtn" class="btn btn-secondary" type="button">
+        ↻ Refresh
+      </button>
+    </header>
+
+
+    <!-- MESSAGE -->
+    <section id="message" class="message hidden" role="alert"></section>
+
+
+    <main class="grid">
+
+      <!-- FORM -->
+      <section class="card form-card">
+
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">FORM</p>
+            <h2 id="formTitle">Tambah Siswa</h2>
+          </div>
+
+          <span id="modeBadge" class="badge">
+            Tambah
+          </span>
+        </div>
+
+
+        <form id="studentForm">
+
+          <input type="hidden" id="studentId">
+
+
+          <!-- NIS -->
+          <label for="nis">NIS</label>
+
+          <input
+            id="nis"
+            name="nis"
+            type="text"
+            maxlength="30"
+            required
+            placeholder="Contoh: 2026004"
+          >
+
+
+          <!-- NAMA -->
+          <label for="nama">Nama</label>
+
+          <input
+            id="nama"
+            name="nama"
+            type="text"
+            maxlength="100"
+            required
+            placeholder="Nama lengkap"
+          >
+
+
+          <!-- KELAS -->
+          <label for="kelas">Kelas</label>
+
+          <input
+            id="kelas"
+            name="kelas"
+            type="text"
+            maxlength="50"
+            required
+            placeholder="Contoh: XI RPL 1"
+          >
+
+
+          <!-- JURUSAN -->
+          <label for="jurusan">Jurusan</label>
+
+          <input
+            id="jurusan"
+            name="jurusan"
+            type="text"
+            maxlength="100"
+            required
+            placeholder="Contoh: Rekayasa Perangkat Lunak"
+          >
+
+
+          <!-- ALAMAT -->
+          <label for="alamat">Alamat</label>
+
+          <textarea
+            id="alamat"
+            name="alamat"
+            maxlength="255"
+            required
+            placeholder="Alamat siswa"
+          ></textarea>
+
+
+          <!-- BUTTON -->
+          <div class="form-actions">
+
+            <button
+              id="submitBtn"
+              class="btn btn-primary"
+              type="submit"
+            >
+              Simpan Siswa
+            </button>
+
+            <button
+              id="cancelBtn"
+              class="btn btn-secondary hidden"
+              type="button"
+            >
+              Batal Edit
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+      <!-- TABLE -->
+      <section class="card table-card">
+
+        <div class="card-heading">
+
+          <div>
+            <p class="eyebrow">DATABASE</p>
+            <h2>Daftar Siswa</h2>
+          </div>
+
+          <span id="studentCount" class="count">
+            0 siswa
+          </span>
+
+        </div>
+
+
+        <!-- LOADING -->
+        <div id="loading" class="loading hidden">
+
+          <div class="spinner"></div>
+
+          <span>
+            Mengambil data siswa...
+          </span>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>ID</th>
+                <th>NIS</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>Jurusan</th>
+                <th>Alamat</th>
+                <th>Aksi</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody id="studentTableBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <!-- EMPTY -->
+        <div id="emptyState" class="empty hidden">
+          Belum ada data siswa.
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+      <span>
+        Student Management System
+      </span>
+
+      <span>
+        Express.js · MySQL · Fetch API
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <script>
+
+    // ==========================================
+    // API
+    // ==========================================
+
+    const API_URL = '/api/siswa';
+
+
+    // ==========================================
+    // ELEMENT
+    // ==========================================
+
+    const form = document.getElementById('studentForm');
+
+    const studentId = document.getElementById('studentId');
+
+    const nis = document.getElementById('nis');
+
+    const nama = document.getElementById('nama');
+
+    const kelas = document.getElementById('kelas');
+
+    const jurusan = document.getElementById('jurusan');
+
+    const alamat = document.getElementById('alamat');
+
+    const tableBody =
+      document.getElementById('studentTableBody');
+
+    const loading =
+      document.getElementById('loading');
+
+    const emptyState =
+      document.getElementById('emptyState');
+
+    const message =
+      document.getElementById('message');
+
+    const studentCount =
+      document.getElementById('studentCount');
+
+    const formTitle =
+      document.getElementById('formTitle');
+
+    const modeBadge =
+      document.getElementById('modeBadge');
+
+    const submitBtn =
+      document.getElementById('submitBtn');
+
+    const cancelBtn =
+      document.getElementById('cancelBtn');
+
+    const refreshBtn =
+      document.getElementById('refreshBtn');
+
+
+    // ==========================================
+    // DATA
+    // ==========================================
+
+    let students = [];
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function showMessage(text, type = 'success') {
+
+      message.textContent = text;
+
+      message.className = `message ${type}`;
+
+      window.clearTimeout(showMessage.timer);
+
+      showMessage.timer =
+        window.setTimeout(() => {
+
+          message.classList.add('hidden');
+
+        }, 4000);
+    }
+
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    function setLoading(state) {
+
+      loading.classList.toggle(
+        'hidden',
+        !state
+      );
+
+    }
+
+
+    // ==========================================
+    // SECURITY
+    // ==========================================
+
+    function escapeHtml(value) {
+
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+
+    }
+
+
+    // ==========================================
+    // GET DATA SISWA
+    // ==========================================
+
+    async function loadStudents() {
+
+      setLoading(true);
+
+      emptyState.classList.add('hidden');
+
+      try {
+
+        const response =
+          await fetch(API_URL);
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            'Gagal mengambil data.'
+          );
+
+        }
+
+
+        students = result.data;
+
+        renderStudents();
+
+      }
+
+      catch (error) {
+
+        showMessage(
+          error.message,
+          'error'
+        );
+
+      }
+
+      finally {
+
+        setLoading(false);
+
+      }
+
+    }
+
+
+    // ==========================================
+    // RENDER DATA
+    // ==========================================
+
+    function renderStudents() {
+
+      studentCount.textContent =
+        `${students.length} siswa`;
+
+
+      if (students.length === 0) {
+
+        tableBody.innerHTML = '';
+
+        emptyState.classList.remove('hidden');
+
+        return;
+
+      }
+
+
+      emptyState.classList.add('hidden');
+
+
+      tableBody.innerHTML =
+        students.map((student) => `
+
+          <tr>
+
+            <td>
+              ${student.id}
+            </td>
+
+            <td>
+              ${escapeHtml(student.nis)}
+            </td>
+
+            <td>
+              ${escapeHtml(student.nama)}
+            </td>
+
+            <td>
+              ${escapeHtml(student.kelas)}
+            </td>
+
+            <td>
+              ${escapeHtml(student.jurusan)}
+            </td>
+
+            <td>
+              ${escapeHtml(student.alamat)}
+            </td>
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  class="btn btn-edit"
+                  type="button"
+                  onclick="editStudent(${student.id})"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  onclick="deleteStudent(${student.id})"
+                >
+                  Hapus
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        `).join('');
+
+    }
+
+
+    // ==========================================
+    // TAMBAH / EDIT SISWA
+    // ==========================================
+
+    form.addEventListener(
+      'submit',
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const payload = {
+
+          nis: nis.value.trim(),
+
+          nama: nama.value.trim(),
+
+          kelas: kelas.value.trim(),
+
+          jurusan: jurusan.value.trim(),
+
+          alamat: alamat.value.trim()
+
+        };
+
+
+        const isEdit =
+          Boolean(studentId.value);
+
+
+        const url =
+          isEdit
+            ? `${API_URL}/${studentId.value}`
+            : API_URL;
+
+
+        const method =
+          isEdit
+            ? 'PUT'
+            : 'POST';
+
+
+        submitBtn.disabled = true;
+
+
+        submitBtn.textContent =
+          isEdit
+            ? 'Menyimpan...'
+            : 'Menambahkan...';
+
+
+        try {
+
+          const response =
+            await fetch(url, {
+
+              method: method,
+
+              headers: {
+                'Content-Type':
+                  'application/json'
+              },
+
+              body:
+                JSON.stringify(payload)
+
+            });
+
+
+          const result =
+            await response.json();
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              result.message ||
+              'Request gagal.'
+            );
+
+          }
+
+
+          showMessage(
+            result.message,
+            'success'
+          );
+
+
+          resetForm();
+
+          await loadStudents();
+
+        }
+
+        catch (error) {
+
+          showMessage(
+            error.message,
+            'error'
+          );
+
+        }
+
+        finally {
+
+          submitBtn.disabled = false;
+
+          submitBtn.textContent =
+            isEdit
+              ? 'Simpan Perubahan'
+              : 'Simpan Siswa';
+
+        }
+
+      }
+    );
+
+
+    // ==========================================
+    // EDIT SISWA
+    // ==========================================
+
+    window.editStudent = function (id) {
+
+      const student =
+        students.find(
+          (item) => item.id === id
+        );
+
+
+      if (!student) return;
+
+
+      studentId.value =
+        student.id;
+
+      nis.value =
+        student.nis;
+
+      nama.value =
+        student.nama;
+
+      kelas.value =
+        student.kelas;
+
+      jurusan.value =
+        student.jurusan;
+
+      alamat.value =
+        student.alamat;
+
+
+      formTitle.textContent =
+        'Edit Siswa';
+
+      modeBadge.textContent =
+        'Edit';
+
+      submitBtn.textContent =
+        'Simpan Perubahan';
+
+
+      cancelBtn.classList.remove(
+        'hidden'
+      );
+
+
+      nis.focus();
+
+
+      window.scrollTo({
+
+        top: 0,
+
+        behavior: 'smooth'
+
+      });
+
+    };
+
+
+    // ==========================================
+    // DELETE SISWA
+    // ==========================================
+
+    window.deleteStudent = async function (id) {
+
+      const student =
+        students.find(
+          (item) => item.id === id
+        );
+
+
+      if (!student) return;
+
+
+      const confirmed =
+        window.confirm(
+          `Hapus data siswa "${student.nama}"?`
+        );
+
+
+      if (!confirmed) return;
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API_URL}/${id}`,
+            {
+              method: 'DELETE'
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            result.message ||
+            'Gagal menghapus data.'
+          );
+
+        }
+
+
+        showMessage(
+          result.message,
+          'success'
+        );
+
+
+        await loadStudents();
+
+      }
+
+      catch (error) {
+
+        showMessage(
+          error.message,
+          'error'
+        );
+
+      }
+
+    };
+
+
+    // ==========================================
+    // RESET FORM
+    // ==========================================
+
+    function resetForm() {
+
+      form.reset();
+
+      studentId.value = '';
+
+      formTitle.textContent =
+        'Tambah Siswa';
+
+      modeBadge.textContent =
+        'Tambah';
+
+      submitBtn.textContent =
+        'Simpan Siswa';
+
+      cancelBtn.classList.add(
+        'hidden'
+      );
+
+    }
+
+
+    // ==========================================
+    // BUTTON
+    // ==========================================
+
+    cancelBtn.addEventListener(
+      'click',
+      resetForm
+    );
+
+
+    refreshBtn.addEventListener(
+      'click',
+      loadStudents
+    );
+
+
+    // ==========================================
+    // LOAD AWAL
+    // ==========================================
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      loadStudents
+    );
+
+  </script>
+
+</body>
+</html>
+```
